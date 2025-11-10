@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+      // validation.js
+
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("userSettingsForm");
+
+  form.addEventListener("submit", function (e) {
+    // Fetch values
+    const fullname = document.getElementById("fullname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const course = document.getElementById("course").value;
+    const currentPassword = document.getElementById("currentPassword").value.trim();
+    const newPassword = document.getElementById("newPassword").value.trim();
+    const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+    // Regular expressions
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phonePattern = /^[0-9]{10}$/;
+    const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    let errors = [];
+
+    // Full name
+    if (fullname === "") {
+      errors.push("Full name is required.");
+    }
+
+    // Email
+    if (!emailPattern.test(email)) {
+      errors.push("Please enter a valid email address.");
+    }
+
+    // Phone
+    if (!phonePattern.test(phone.replace(/\D/g, ""))) {
+      errors.push("Please enter a valid 10-digit phone number.");
+    }
+
+    // Course
+    if (course === "Choose...") {
+      errors.push("Please select a course.");
+    }
+
+    // Passwords
+    if (currentPassword === "") {
+      errors.push("Current password is required.");
+    }
+
+    if (!strongPassword.test(newPassword)) {
+      errors.push(
+        "New password must be at least 8 characters long and include uppercase, lowercase, and a number."
+      );
+    }
+
+    if (newPassword !== confirmPassword) {
+      errors.push("New passwords do not match.");
+    }
+
+    // Show errors if any
+    if (errors.length > 0) {
+      e.preventDefault(); // Stop form submission
+      alert("Please fix the following errors:\n\n" + errors.join("\n"));
+    }
+  });
+});
+
+    </script>
+  </head>
+
+  <body class="bg-light">
+
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+
+          <div class="card shadow-lg">
+            <div class="card-body p-4">
+              <h2 class="text-center mb-4">User Settings</h2>
+
+              <form id="userSettingsForm" action="update-settings" method="post">
+                
+                <!-- Profile Info -->
+                <h5 class="mb-3">Profile Information</h5>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="fullname" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="John Doe" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="john@example.com" required>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="+91 9876543210" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="course" class="form-label">Current Course</label>
+                    <select class="form-select" id="course" name="course">
+                      <option selected>Choose...</option>
+                      <option value="AI">Artificial Intelligence</option>
+                      <option value="DS">Data Science</option>
+                      <option value="WD">Web Development</option>
+                      <option value="ML">Machine Learning</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Password Update -->
+                <h5 class="mb-3 mt-4">Change Password</h5>
+                <div class="mb-3">
+                  <label for="currentPassword" class="form-label">Current Password</label>
+                  <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                </div>
+                <div class="mb-3">
+                  <label for="newPassword" class="form-label">New Password</label>
+                  <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                </div>
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                </div>
+
+                <!-- Notifications -->
+                <h5 class="mb-3 mt-4">Notifications</h5>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                  <label class="form-check-label" for="emailNotif">Email Notifications</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="smsNotif">
+                  <label class="form-check-label" for="smsNotif">SMS Notifications</label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                  <button type="reset" class="btn btn-secondary">Reset</button>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Link your external JS validation file -->
+    <script src="user.js"></script>
+  </body>
+</html>
